@@ -13,4 +13,3 @@ data <- illumina2007 %>%
                                   "chip", "Chip.Id", "Chip.Section",
                                   "cRNA", "label.c"))) %>%
   dplyr::filter(!duplicated(.$id))
-

@@ -1,7 +1,6 @@
 # ==============================================================================
 # run multi-level TMLE
 # ==============================================================================
-# load helper TMLE function and use ProjectTemplate
 library(ProjectTemplate)
 load.project()
 source("./lib/multilevelTMLE.R")
