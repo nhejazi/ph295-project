@@ -4,6 +4,7 @@
 library(foreach)
 library(parallel)
 library(doParallel)
+library(data.table)
 library(ProjectTemplate)
 load.project()
 source("./lib/biomarkerTMLE.R")
@@ -39,3 +40,5 @@ genomicATE <- foreach(gene = 1:ncol(Y2), .combine = cbind) %dopar% {
 biomarkerATE <- as.data.frame(t(genomicATE))
 rownames(biomarkerATE) <- geneIDs
 colnames(biomarkerATE) <- subjIDs
+
+data.table::fwrite(paste0(data_dir, "ICestimates.csv"))

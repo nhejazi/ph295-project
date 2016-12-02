@@ -9,7 +9,7 @@ library(wesanderson)
 
 
 # make the Limma design matrix and fit linear models to each gene
-design <- as.data.frame(cbind(rep(1, nrow(Y)), as.numeric(A == min(unique(A)))))
+design <- as.data.frame(cbind(rep(1, nrow(Y)), as.numeric(A == max(unique(A)))))
 colnames(design) <- c("intercept", "Tx")
 
 fit <- lmFit(biomarkerATE, design)
