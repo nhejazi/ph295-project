@@ -36,5 +36,5 @@ ggplot(tt, aes(adj.P.Val)) +
                  na.rm = TRUE, binwidth = 0.01) +
   ggtitle("Histogram of BH p-values (FDR) \n (Limma applied to TMLE)") +
   xlab("BH p-value magnitude") + scale_fill_gradientn("Count", colors = pal) +
-  guides(fill = guide_legend(title = NULL)) + theme_minimal()
+  guides(fill = guide_legend(title = NULL)) + xlim(0, 1) + theme_minimal()
 dev.off()
