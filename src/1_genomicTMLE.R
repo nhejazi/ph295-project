@@ -24,7 +24,7 @@ if (tail(strsplit(Sys.info()["nodename"], "[.]")$nodename, n = 1) == "edu") {
   doParallel::registerDoParallel(4)
 }
 
-genomicATE <- foreach(gene = 1:ncol(Y2), .combine = cbind) %dopar% {
+genomicATE <- foreach(gene = 1:ncol(Y), .combine = cbind) %dopar% {
   print(paste("estimating ATE for", gene, "of", ncol(Y), ". Gene ID:",
               geneIDs[gene]))
   out <- biomarkerTMLE(Y = Y[, gene],
