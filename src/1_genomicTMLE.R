@@ -41,4 +41,5 @@ biomarkerATE <- as.data.frame(t(genomicATE))
 rownames(biomarkerATE) <- geneIDs
 colnames(biomarkerATE) <- subjIDs
 
-data.table::fwrite(paste0(data_dir, "ICestimates.csv"))
+data.table::fwrite(x = data.table(biomarkerATE),
+                   file = paste0(data_dir, "/ICestimates.csv"))
