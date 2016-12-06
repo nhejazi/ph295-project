@@ -1,8 +1,5 @@
 # create O = (W, A, Y) structure from cleaned up data
 
-library(affy)
-library(preprocessCore)
-
 
 # W - age, sex, smoking
 W <- data %>%
@@ -22,7 +19,8 @@ Y <- data %>%
 
 geneIDs <- colnames(Y)
 
-Y <- as.data.frame(t(preprocessCore::normalize.quantiles(t(Y))))
+# median normalization
+Y_medNorm <- as.data.frame(scale(Y, scale = apply(t(Y), 1, mad)))
 
 # (too simple of a) sanity check of whether Y includes array values
 if(unique(lapply(Y, class)) != "numeric") {
