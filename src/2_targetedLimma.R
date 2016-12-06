@@ -10,13 +10,14 @@ pal <- wes_palette("Darjeeling", 100, type = "continuous")
 
 
 # make the Limma design matrix and fit linear models to each gene
-design <- as.data.frame(cbind(rep(1, nrow(Y)), as.numeric(A == max(unique(A)))))
-colnames(design) <- c("intercept", "Tx")
+design <- as.data.frame(cbind(rep(1, nrow(Y)), as.numeric(A == max(unique(A))),
+                        as.numeric(A == min(unique(A)))))
+colnames(design) <- c("intercept", "Tx_max", "Tx_min")
 
 fit_diff <- lmFit(biomarkerATE_diff, design)
 fit_diff <- eBayes(fit_diff)
-tt_diff <- topTable(fit_diff, coef = 2, adjust.method = "BH", sort.by = "none",
-                    number = Inf)
+tt_diff <- topTable(fit_diff, coef = c(2, 3), adjust.method = "BH",
+                    sort.by = "none", number = Inf)
 
 
 # make histograms of raw and adjusted p-values and save to `graphs/` directory
@@ -40,6 +41,9 @@ dev.off()
 
 
 # make the Limma design matrix and fit linear models to each gene
+design <- as.data.frame(cbind(rep(1, nrow(Y)), as.numeric(A == max(unique(A)))))
+colnames(design) <- c("intercept", "Tx")
+
 fit_max <- lmFit(biomarkerATE_max, design)
 fit_max <- eBayes(fit_max)
 tt_max <- topTable(fit_max, coef = 2, adjust.method = "BH", sort.by = "none",

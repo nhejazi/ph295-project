@@ -20,9 +20,9 @@ Y <- data %>%
 geneIDs <- colnames(Y)
 
 # median normalization
-Y_medNorm <- as.data.frame(scale(Y, scale = apply(t(Y), 1, mad)))
+Y_medNorm <- as.data.frame(limma::normalizeBetweenArrays(Y, method = "scale"))
 
 # (too simple of a) sanity check of whether Y includes array values
-if(unique(lapply(Y, class)) != "numeric") {
+if(unique(lapply(Y_medNorm, class)) != "numeric") {
   print("Warning - values in Y do not appear to be gene expression measures...")
 }
