@@ -15,8 +15,7 @@
 #
 # NOTE - only compares the levels of A against the lowest level of A
 
-biomarkerTMLE <- function(Y, W, A, a, param = "diff", family = "gaussian",
-                          g.lib, Q.lib) {
+biomarkerTMLE <- function(Y, W, A, a, family = "gaussian", g.lib, Q.lib) {
   require(tmle)
   
   # check the case that Y is passed in as a column of a data.frame
@@ -26,6 +25,7 @@ biomarkerTMLE <- function(Y, W, A, a, param = "diff", family = "gaussian",
   
   n_a = length(a)
   IC = NULL
+  EY = NULL
   
   for(i in 1:n_a) {
     A_star = as.numeric(A == a[i])
@@ -40,15 +40,13 @@ biomarkerTMLE <- function(Y, W, A, a, param = "diff", family = "gaussian",
     g_0 = fit_tmle$g$g1W
     Qst_0 = fit_tmle$Qstar[, 2]
     EY_0 = mean(Qst_0)
+    EY = cbind(EY, EY_0)
     IC = cbind(IC, (A_star / g_0) * (Y - Qst_0) + Qst_0 - EY_0)
   }
   
+  EY_diff = EY[, 2:n_a] - EY[, 1]
   IC_diff = IC[, 2:n_a] - IC[, 1]
   
-  if (param == "diff") {
-    output <- IC_diff[, ncol(IC_diff)]
-  } else {
-    output <- IC[, n_a] # counterfactual difference between maximum Tx and not
-  }
+  output = IC_diff[, ncol(IC_diff)] + EY_diff[, ncol(EY_diff)]
   return(output)
 }

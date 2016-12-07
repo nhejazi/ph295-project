@@ -3,7 +3,12 @@
 
 # W - age, sex, smoking
 W <- data %>%
-  dplyr::select(which(colnames(.) %in% c("age", "sex", "smoking")))
+  dplyr::select(which(colnames(.) %in% c("age", "sex", "smoking"))) %>%
+  dplyr::mutate(
+    age = as.numeric((age > quantile(age, 0.25))),
+    sex = sex,
+    smoking = smoking
+  )
 
 
 # A - benzene exposure (discretized)
