@@ -10,10 +10,10 @@ load.project()
 source("./lib/biomarkerTMLE.R")
 
 # libraries for the g-fit and Q-fit steps of the TMLE
-g_lib  <- c("SL.stepAIC", "SL.gbm", "SL.glmnet", "SL.loess", "SL.randomForest",
-            "SL.nnet", "SL.knn", "SL.earth", "SL.polymars")
-#Q_lib <- list("SL.glm", "SL.bayesglm")
-#Q.lib <- list("SL.glm", "SL.stepAIC", "SL.bayesglm", "SL.nnet")
+g_lib  <- c("SL.stepAIC", "SL.gbm", "SL.glmnet", "SL.randomForest", "SL.nnet",
+            "SL.earth", "SL.polymars")
+Q_lib <- c("SL.stepAIC", "SL.gbm", "SL.glmnet", "SL.loess", "SL.randomForest",
+           "SL.nnet", "SL.earth", "SL.polymars")
 
 
 # ==============================================================================
@@ -35,7 +35,7 @@ genomicATE_diff <- foreach(gene = 1:3, .combine = cbind) %dopar% {
                        A = A,
                        a = 1:length(unique(A)),
                        g.lib = g_lib,
-                       Q.lib = g_lib,
+                       Q.lib = Q_lib,
                        family = "gaussian"
                       )
 }
