@@ -10,11 +10,13 @@ load.project()
 source("./lib/biomarkerTMLE.R")
 
 # libraries for the g-fit and Q-fit steps of the TMLE
-g_lib  <- c("SL.stepAIC", "SL.gbm", "SL.glmnet", "SL.randomForest", "SL.nnet",
-            "SL.earth", "SL.polymars")
-Q_lib <- c("SL.stepAIC", "SL.gbm", "SL.glmnet", "SL.loess", "SL.randomForest",
-           "SL.nnet", "SL.earth", "SL.polymars")
-
+#g_lib  <- c("SL.gbm", "SL.glmnet", "SL.randomForest", "SL.nnet",
+#            "SL.earth", "SL.polymars")
+#Q_lib <- c("SL.gbm", "SL.glmnet", "SL.loess", "SL.randomForest",
+#           "SL.nnet", "SL.earth", "SL.polymars")
+test_lib <- c("SL.stepAIC", "SL.glmnet")
+g_lib <- test_lib
+Q_lib <- test_lib
 
 # ==============================================================================
 # perform multi-level TMLE estimation (for all columns/genes)
@@ -46,26 +48,3 @@ colnames(biomarkerATE_diff) <- as.character(subjIDs)
 
 data.table::fwrite(x = data.table(biomarkerATE_diff),
                    file = paste0(data_dir, "/ICestimates_diff.csv"))
-
-# computes the parameter defined as the counterfactual difference in receiving
-# the maximum Tx level versus not...
-genomicATE_max <- foreach(gene = 1:ncol(Y), .combine = cbind) %dopar% {
-  print(paste("estimating ATE for", gene, "of", ncol(Y_medNorm), ". Gene ID:",
-              geneIDs[gene]))
-  out <- biomarkerTMLE(Y = Y_medNorm[, gene],
-                       W = W,
-                       A = A,
-                       a = 1:length(unique(A)),
-                       g.lib = g.lib,
-                       Q.lib = Q.lib,
-                       family = "gaussian",
-                       param = "max"
-  )
-}
-
-biomarkerATE_max <- as.data.frame(t(genomicATE_max))
-rownames(biomarkerATE_max) <- geneIDs
-colnames(biomarkerATE_max) <- as.character(subjIDs)
-
-data.table::fwrite(x = data.table(biomarkerATE_max),
-                   file = paste0(data_dir, "/ICestimates_max.csv"))
