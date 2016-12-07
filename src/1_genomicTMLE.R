@@ -14,9 +14,8 @@ source("./lib/biomarkerTMLE.R")
 #            "SL.earth", "SL.polymars")
 #Q_lib <- c("SL.gbm", "SL.glmnet", "SL.loess", "SL.randomForest",
 #           "SL.nnet", "SL.earth", "SL.polymars")
-test_lib <- c("SL.stepAIC", "SL.glmnet")
-g_lib <- test_lib
-Q_lib <- test_lib
+g_lib <- c("SL.stepAIC")
+Q_lib <- c("SL.glm", "SL.bayesglm")
 
 # ==============================================================================
 # perform multi-level TMLE estimation (for all columns/genes)
