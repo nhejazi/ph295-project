@@ -34,8 +34,8 @@ genomicATE_diff <- foreach(gene = 1:3, .combine = cbind) %dopar% {
                        W = W,
                        A = A,
                        a = 1:length(unique(A)),
-                       g.lib = g.lib,
-                       Q.lib = g.lib,
+                       g.lib = g_lib,
+                       Q.lib = g_lib,
                        family = "gaussian"
                       )
 }
