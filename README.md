@@ -1,10 +1,10 @@
-# UC Berkeley's Public Health 295: Course Project
+# UC Berkeley's Public Health 295: Final Project
 
 [![MIT
 license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-_**Team members:**_ [Nima Hejazi](https://github.com/nhejazi) and [Andre
-Waschka]()
+_**Team members:**_ [Nima Hejazi](https://github.com/nhejazi), [Andre
+Waschka](), [Mary Combs]()
 
 Instructors: [Prof. Mark J. van der
 Laan](http://sph.berkeley.edu/mark-van-der-laan)
