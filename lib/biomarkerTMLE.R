@@ -40,13 +40,13 @@ biomarkerTMLE <- function(Y, W, A, a, family = "gaussian", g.lib, Q.lib) {
     g_0 = fit_tmle$g$g1W
     Qst_0 = fit_tmle$Qstar[, 2]
     EY_0 = mean(Qst_0)
-    EY = cbind(EY, EY_0)
+    EY = c(EY, EY_0)
     IC = cbind(IC, (A_star / g_0) * (Y - Qst_0) + Qst_0 - EY_0)
   }
   
-  EY_diff = EY[, 2:n_a] - EY[, 1]
+  EY_diff = EY[2:n_a] - EY[1]
   IC_diff = IC[, 2:n_a] - IC[, 1]
   
-  output = IC_diff[, ncol(IC_diff)] + EY_diff[, ncol(EY_diff)]
+  output = IC_diff[, ncol(IC_diff)] + EY_diff[length(EY_diff)]
   return(output)
 }
