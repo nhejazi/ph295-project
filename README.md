@@ -24,7 +24,8 @@ project description goes here
 
 ## License
 
-&copy; 2016 [Nima Hejazi](http://nimahejazi.org) & Andre Waschka
+&copy; 2016 [Nima Hejazi](http://nimahejazi.org), Andre Waschka, Mary Combs,
+Alan Hubbard
 
 The contents of this repository are distributed under the MIT license. See file
 `LICENSE` for details.
