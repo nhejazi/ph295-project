@@ -1,5 +1,6 @@
 data/*.csv
 data/*.rda
+results/*.csv
 .Rproj.user
 .Rhistory
 .RData
