@@ -3,8 +3,8 @@
 library(NMF)
 library(ggplot2)
 library(wesanderson)
-pal <- wes_palette("Rushmore", 100, type = "continuous")
-
+pal1 <- wes_palette("Rushmore", 100, type = "continuous")
+pal2 <- wes_palette("Darjeeling", type = "continuous")
 
 # make heatmap of genes showing differential expression
 top = 25
@@ -38,7 +38,7 @@ ggplot(tt_diff, aes(P.Value)) +
   ggtitle(paste("Histogram of raw p-values \n (applying Limma shrinkage to",
                 "TMLE results)")) +
   xlab("magnitude of raw p-values") +
-  scale_fill_gradientn("Count", colors = pal) +
+  scale_fill_gradientn("Count", colors = pal1) +
   guides(fill = guide_legend(title = NULL)) +
   theme_bw()
 dev.off()
@@ -50,7 +50,30 @@ ggplot(tt_diff, aes(adj.P.Val)) +
   ggtitle(paste("Histogram of FDR-corrected p-values (BH) \n (applying Limma",
                 "shrinkage to TMLE results)")) +
   xlab("magnitude of BH-corrected p-values") +
-  scale_fill_gradientn("Count", colors = pal) +
+  scale_fill_gradientn("Count", colors = pal1) +
   guides(fill = guide_legend(title = NULL)) +
+  theme_bw()
+dev.off()
+
+
+# add volcano plot examining genes showing differential expression
+tt_volcano <- tt_diff %>%
+  dplyr::arrange(adj.P.Val) %>%
+  dplyr::mutate(
+    logFC = I(logFC),
+    logPval = -log10(P.Value),
+    color = ifelse((logFC > 3.0) & (adj.P.Val < 0.2), "1",
+                   ifelse((logFC < -3.0) & (adj.P.Val < 0.2), "-1", "0"))
+  ) %>%
+  dplyr::select(which(colnames(.) %in% c("logFC", "logPval", "color"))) %>%
+  dplyr::filter((logFC > quantile(logFC, probs = 0.2)) &
+                  logFC < quantile(logFC, probs = 0.75))
+
+pdf(file = paste0(proj_dir, paste0("/graphs/geneVolcanoATE.pdf")))
+ggplot(tt_volcano, aes(x = logFC, y = logPval)) +
+  geom_point(aes(colour = color)) +
+  xlab("log2(Fold Change)") + ylab("-log10(raw p-value)") +
+  ggtitle("Volcano Plot of Differential Average Tx Effect") +
+  scale_colour_manual(values = pal2[1:3], guide = FALSE) +
   theme_bw()
 dev.off()
